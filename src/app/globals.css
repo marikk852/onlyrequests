@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-light: #F0F4F1;
+  --question-color: #006266;
+  --answer-color: #FF7675;
+}
+
+body {
+  background: var(--bg-light);
+  min-height: 100vh;
+}
+
+@layer utilities {
+  /* Глянцевое стекло — вопросы (#006266) */
+  .glossy-question {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 98, 102, 0.25) 0%,
+      rgba(0, 98, 102, 0.15) 50%,
+      rgba(0, 98, 102, 0.1) 100%
+    );
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(0, 98, 102, 0.4);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Глянцевое стекло — ответы (#FF7675) */
+  .glossy-answer {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 118, 117, 0.35) 0%,
+      rgba(255, 118, 117, 0.2) 50%,
+      rgba(255, 118, 117, 0.15) 100%
+    );
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255, 118, 117, 0.5);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Глянцевое стекло — нейтральное (старт, финиш) */
+  .glossy-neutral {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0.3) 100%
+    );
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+  }
+}
