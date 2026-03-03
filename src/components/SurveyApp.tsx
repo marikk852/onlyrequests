@@ -182,14 +182,18 @@ export default function SurveyApp() {
               <div className="space-y-4">
                 {currentItem.options?.map((option, idx) => (
                   <motion.button
-                    key={idx}
+                    key={`${currentQuestion}-${idx}`}
                     onClick={() => handleAnswer(option)}
-                    className="w-full p-5 text-left rounded-xl glossy-answer text-gray-800 font-medium hover:opacity-90 transition-all duration-300"
+                    className="w-full p-5 text-left rounded-xl glossy-answer text-gray-800 font-medium hover:opacity-90 transition-opacity duration-300"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.08 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: 0.15 + idx * 0.1,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
                   >
                     {option}
                   </motion.button>
