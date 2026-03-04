@@ -67,8 +67,22 @@ export default function SurveyApp() {
     setIsSending(false);
   };
 
+  const handleBack = () => {
+    if (currentQuestion === 0) return;
+    const lastAnswer = answers[answers.length - 1];
+    setAnswers((prev) => prev.slice(0, -1));
+    setCurrentQuestion((prev) => prev - 1);
+    setContactError("");
+    if (lastAnswer?.questionIndex === QUESTIONS.length - 1) {
+      setContactInput(lastAnswer.answer);
+    } else if (currentQuestion === QUESTIONS.length - 1) {
+      setContactInput("");
+    }
+  };
+
   const currentItem = QUESTIONS[currentQuestion];
   const isContactField = currentItem?.isContactField;
+  const canGoBack = currentQuestion > 0;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 text-gray-800">
@@ -128,8 +142,23 @@ export default function SurveyApp() {
             transition={{ duration: 0.4 }}
             className="w-full max-w-2xl space-y-8"
           >
-            <div className="mb-2 text-sm text-[#006266]/70">
-              {currentQuestion + 1} з {QUESTIONS.length}
+            <div className="flex items-center gap-4 mb-2">
+              <motion.button
+                onClick={handleBack}
+                disabled={!canGoBack}
+                className="p-2 rounded-xl transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-80"
+                style={{ color: "#006266" }}
+                whileHover={canGoBack ? { scale: 1.1 } : {}}
+                whileTap={canGoBack ? { scale: 0.95 } : {}}
+                aria-label="Попереднє питання"
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </motion.button>
+              <span className="text-sm text-[#006266]/70">
+                {currentQuestion + 1} з {QUESTIONS.length}
+              </span>
             </div>
 
             <motion.div
