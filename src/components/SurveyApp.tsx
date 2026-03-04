@@ -46,7 +46,7 @@ export default function SurveyApp() {
   const handleContactSubmit = () => {
     const trimmed = contactInput.trim();
     if (!trimmed) {
-      setContactError("Пожалуйста, укажите ваш телеграм или вотсап");
+      setContactError("Будь ласка, вкажіть ваш Telegram або WhatsApp");
       return;
     }
 
@@ -90,7 +90,7 @@ export default function SurveyApp() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              Желаете узнать, подходит ли вам онлайн-работа?
+              Бажаєте дізнатися, чи підходить вам онлайн-робота?
             </motion.p>
 
             <motion.button
@@ -129,7 +129,7 @@ export default function SurveyApp() {
             className="w-full max-w-2xl space-y-8"
           >
             <div className="mb-2 text-sm text-[#006266]/70">
-              {currentQuestion + 1} из {QUESTIONS.length}
+              {currentQuestion + 1} з {QUESTIONS.length}
             </div>
 
             <motion.div
@@ -157,7 +157,7 @@ export default function SurveyApp() {
                       setContactInput(e.target.value);
                       setContactError("");
                     }}
-                    placeholder="@username или +7..."
+                    placeholder="@username або +380..."
                     className="w-full p-5 rounded-xl glossy-answer text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF7675]/50 focus:border-[#FF7675]/70 transition-all"
                   />
                   {contactError && (
@@ -175,7 +175,7 @@ export default function SurveyApp() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Отправить
+                  Надіслати
                 </motion.button>
               </div>
             ) : (
@@ -219,7 +219,7 @@ export default function SurveyApp() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                Поздравляем! Ты завершил тест.
+                Вітаємо! Ваша анкета прийнята.
               </motion.h2>
               <motion.p
                 className="text-lg text-gray-600"
@@ -227,7 +227,7 @@ export default function SurveyApp() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                Жди сообщение в Телеграм
+                З вами скоро зв'яжеться менеджер у Telegram/WhatsApp та розповість деталі співпраці.
               </motion.p>
               {isSending && (
                 <motion.p
@@ -235,7 +235,7 @@ export default function SurveyApp() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
-                  Отправка результатов...
+                  Надсилання результатів...
                 </motion.p>
               )}
             </div>
