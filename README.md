@@ -27,10 +27,13 @@ TELEGRAM_CHAT_ID=id_чата_для_получения_сообщений
 
 ## Meta (Facebook) Pixel
 
-Чтобы включить Pixel, добавьте в `.env.local` (можно взять шаблон из `.env.local.example`):
+Чтобы включить Pixel, задайте переменную окружения `NEXT_PUBLIC_META_PIXEL_ID`:
+
+- в **Vercel**: Project → Settings → Environment Variables → добавьте `NEXT_PUBLIC_META_PIXEL_ID`
+- локально: в `.env.local` (можно взять шаблон из `.env.local.example`)
 
 ```
-NEXT_PUBLIC_META_PIXEL_ID=863362376023771
+NEXT_PUBLIC_META_PIXEL_ID=ваш_pixel_id
 ```
 
 Что трекается:
