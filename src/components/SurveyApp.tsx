@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { QUESTIONS } from "@/data/questions";
 import { sendResultsToTelegram, type SurveyAnswer } from "@/app/actions/telegram";
 import Confetti from "./Confetti";
+import { trackMetaEvent } from "@/lib/metaPixel";
 
 type Screen = "start" | "survey" | "finish";
 
@@ -15,6 +16,7 @@ export default function SurveyApp() {
   const [contactInput, setContactInput] = useState("");
   const [contactError, setContactError] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [leadTracked, setLeadTracked] = useState(false);
 
   const handleStartTest = () => {
     setScreen("survey");
@@ -22,6 +24,7 @@ export default function SurveyApp() {
     setAnswers([]);
     setContactInput("");
     setContactError("");
+    setLeadTracked(false);
   };
 
   const handleAnswer = (option: string) => {
@@ -39,7 +42,7 @@ export default function SurveyApp() {
       setCurrentQuestion((prev) => prev + 1);
     } else {
       setScreen("finish");
-      sendToTelegram([...answers, newAnswer]);
+      sendToTelegram([...answers, newAnswer], false);
     }
   };
 
@@ -58,13 +61,20 @@ export default function SurveyApp() {
     };
     setAnswers((prev) => [...prev, newAnswer]);
     setScreen("finish");
-    sendToTelegram([...answers, newAnswer]);
+    sendToTelegram([...answers, newAnswer], true);
   };
 
-  const sendToTelegram = async (allAnswers: SurveyAnswer[]) => {
+  const sendToTelegram = async (allAnswers: SurveyAnswer[], shouldTrackLead: boolean) => {
     setIsSending(true);
-    await sendResultsToTelegram(allAnswers);
-    setIsSending(false);
+    try {
+      const result = await sendResultsToTelegram(allAnswers);
+      if (shouldTrackLead && result.success && !leadTracked) {
+        trackMetaEvent("Lead");
+        setLeadTracked(true);
+      }
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleBack = () => {
