@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QUESTIONS } from "@/data/questions";
 import { sendResultsToTelegram, type SurveyAnswer } from "@/app/actions/telegram";
@@ -17,6 +17,8 @@ export default function SurveyApp() {
   const [contactError, setContactError] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [leadTracked, setLeadTracked] = useState(false);
+  const isSendingRef = useRef(false);
+  const leadTrackedRef = useRef(false);
 
   const handleStartTest = () => {
     setScreen("survey");
@@ -25,6 +27,8 @@ export default function SurveyApp() {
     setContactInput("");
     setContactError("");
     setLeadTracked(false);
+    isSendingRef.current = false;
+    leadTrackedRef.current = false;
   };
 
   const handleAnswer = (option: string) => {
@@ -47,6 +51,7 @@ export default function SurveyApp() {
   };
 
   const handleContactSubmit = () => {
+    if (isSendingRef.current) return;
     const trimmed = contactInput.trim();
     if (!trimmed) {
       setContactError("Будь ласка, вкажіть ваш Telegram або WhatsApp");
@@ -65,15 +70,19 @@ export default function SurveyApp() {
   };
 
   const sendToTelegram = async (allAnswers: SurveyAnswer[], shouldTrackLead: boolean) => {
+    if (isSendingRef.current) return;
+    isSendingRef.current = true;
     setIsSending(true);
     try {
       const result = await sendResultsToTelegram(allAnswers);
-      if (shouldTrackLead && result.success && !leadTracked) {
+      if (shouldTrackLead && result.success && !leadTrackedRef.current) {
+        leadTrackedRef.current = true;
         trackMetaEvent("Lead");
         setLeadTracked(true);
       }
     } finally {
       setIsSending(false);
+      isSendingRef.current = false;
     }
   };
 
@@ -205,6 +214,7 @@ export default function SurveyApp() {
                 </motion.div>
                 <motion.button
                   onClick={handleContactSubmit}
+                  disabled={isSending || leadTracked}
                   className="w-full p-5 rounded-xl text-white font-semibold transition-all duration-300"
                   style={{
                     background: "linear-gradient(135deg, #FF7675 0%, #e86a69 100%)",
