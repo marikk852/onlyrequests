@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QUESTIONS } from "@/data/questions";
 import { sendResultsToTelegram, type SurveyAnswer } from "@/app/actions/telegram";
@@ -19,6 +19,15 @@ export default function SurveyApp() {
   const [leadTracked, setLeadTracked] = useState(false);
   const isSendingRef = useRef(false);
   const leadTrackedRef = useRef(false);
+  const viewContentTrackedRef = useRef(false);
+
+  useEffect(() => {
+    if (screen !== "survey") return;
+    if (currentQuestion !== 0) return;
+    if (viewContentTrackedRef.current) return;
+    viewContentTrackedRef.current = true;
+    trackMetaEvent("ViewContent");
+  }, [screen, currentQuestion]);
 
   const handleStartTest = () => {
     setScreen("survey");
@@ -29,6 +38,7 @@ export default function SurveyApp() {
     setLeadTracked(false);
     isSendingRef.current = false;
     leadTrackedRef.current = false;
+    viewContentTrackedRef.current = false;
   };
 
   const handleAnswer = (option: string) => {
